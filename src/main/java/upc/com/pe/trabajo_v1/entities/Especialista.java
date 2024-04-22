@@ -21,7 +21,5 @@ public class Especialista {
     private String especialidad;
     @Column(name = "telefono", nullable = false)
     private int telefono;
-    @ManyToOne(targetEntity = Clinica.class)
-    @JoinColumn(name = "clinica_id")
-    private Clinica clinica;
+   
 }
