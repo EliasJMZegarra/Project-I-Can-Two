@@ -12,7 +12,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Reserva {
+public class Cita {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

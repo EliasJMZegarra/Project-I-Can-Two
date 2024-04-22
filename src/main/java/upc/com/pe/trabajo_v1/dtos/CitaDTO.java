@@ -7,7 +7,7 @@ import upc.com.pe.trabajo_v1.entities.Usuario;
 import java.sql.Time;
 import java.util.Date;
 @Data
-public class ReservaDTO {
+public class CitaDTO {
     private int id;
     private String motivo;
     private Date fecha;
