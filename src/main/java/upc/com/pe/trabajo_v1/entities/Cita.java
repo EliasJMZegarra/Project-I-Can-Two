@@ -22,6 +22,8 @@ public class Cita {
     private Date fecha;
     @Column(name = "horario", nullable = false)
     private Time horario;
+    @Column(name = "estado",nullable = false)
+    private Boolean estado;
     @Column(name = "pago", nullable = false)
     private int pago;
     @ManyToOne(targetEntity = Usuario.class)
