@@ -23,7 +23,7 @@ public class Cita {
     @Column(name = "horario", nullable = false)
     private Time horario;
     @Column(name = "estado",nullable = false)
-    private Boolean estado;
+    private String estado;
     @Column(name = "pago", nullable = false)
     private int pago;
     @ManyToOne(targetEntity = Usuario.class)

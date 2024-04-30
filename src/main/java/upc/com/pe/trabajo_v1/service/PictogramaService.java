@@ -17,13 +17,12 @@ public class PictogramaService {
     public List<Pictograma> listado(){
         return pictogramaRepository.findAll();
     }
-    public Pictograma actualizar(Pictograma pictograma) throws Exception {
-        pictogramaRepository.findById(pictograma.getId()).orElseThrow(() -> new Exception("No se encontró entidad"));
-        return pictogramaRepository.save(pictograma);
-    }
-    public Pictograma eliminar(Integer codigo) throws Exception{
-        Pictograma pictograma = pictogramaRepository.findById(codigo).orElseThrow(() -> new Exception("No se encontró entidad"));
-        pictogramaRepository.delete(pictograma);
+
+    public Pictograma eliminar(Integer codigo){
+        Pictograma pictograma = pictogramaRepository.findById(codigo).orElse(null);
+        if(pictograma != null){
+            pictogramaRepository.delete(pictograma);
+        }
         return pictograma;
     }
 }

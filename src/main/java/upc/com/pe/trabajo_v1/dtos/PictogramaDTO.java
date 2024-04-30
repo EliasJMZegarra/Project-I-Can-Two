@@ -8,4 +8,5 @@ public class PictogramaDTO {
     private String imagen;
     private String descripcion;
     private String categoria;
+    //private byte[] imagenData;
 }

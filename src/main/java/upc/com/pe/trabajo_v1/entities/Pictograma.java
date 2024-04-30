@@ -19,4 +19,6 @@ public class Pictograma {
     private String descripcion;
     @Column(name = "categoria",length = 50, nullable = false)
     private String categoria;
+    //@Lob
+    //private byte[] imagenData; //Datos binarios de la imagen
 }

@@ -14,19 +14,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/pictograma")
 public class PictogramaController {
     @Autowired
     public PictogramaService service;
 
-    @GetMapping("/pictogramas")
+    @GetMapping("/listar")
     public ResponseEntity<List<PictogramaDTO>> obtenerPictograma(){
         List<Pictograma> list = service.listado();
         List<PictogramaDTO> listDto = convertToListDto(list);
-        return new ResponseEntity<List<PictogramaDTO>>(listDto, HttpStatus.OK);
+        return new ResponseEntity<>(listDto, HttpStatus.OK);
     }
 
-    @PostMapping("/pictograma")
+    @PostMapping("/registrar")
     public ResponseEntity<PictogramaDTO> RegistarPictograma(@RequestBody PictogramaDTO pictogramaDTO) {
         Pictograma pictograma;
         try {
@@ -35,34 +35,17 @@ public class PictogramaController {
         }catch(Exception e){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No se pudo crear, sorry", e);
         }
-        return new ResponseEntity<PictogramaDTO>(pictogramaDTO, HttpStatus.OK);
+        return new ResponseEntity<>(pictogramaDTO, HttpStatus.OK);
     }
 
-    @PutMapping("/pictograma")
-    public ResponseEntity<PictogramaDTO> actualizar(@RequestBody PictogramaDTO pictogramaDetalle) {
-        PictogramaDTO pictogramaDTO;
-        Pictograma pictograma;
-        try {
-            pictograma = convertToEntity(pictogramaDetalle);
-
-            pictograma = service.actualizar(pictograma);
-
-            pictogramaDTO = convertToDto(pictograma);
-            return new ResponseEntity<PictogramaDTO>(pictogramaDTO, HttpStatus.OK);
-        } catch (Exception e) {
-
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No se pudo actualizar, sorry");
-        }
-    }
-
-    @DeleteMapping("/pictograma/{codigo}")
+    @DeleteMapping("/eliminar/{codigo}")
     public ResponseEntity<PictogramaDTO> borrarPictograma(@PathVariable(value = "codigo") Integer codigo){
         Pictograma pictograma;
         PictogramaDTO pictogramaDTO;
         try {
             pictograma = service.eliminar(codigo);
             pictogramaDTO = convertToDto(pictograma);
-            return new ResponseEntity<PictogramaDTO>(pictogramaDTO, HttpStatus.OK);
+            return new ResponseEntity<>(pictogramaDTO, HttpStatus.OK);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No se pudo eliminar, sorry");
         }

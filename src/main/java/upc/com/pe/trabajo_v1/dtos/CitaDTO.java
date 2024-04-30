@@ -12,7 +12,7 @@ public class CitaDTO {
     private String motivo;
     private Date fecha;
     private Time horario;
-    private Boolean estado;
+    private String estado;
     private int pago;
     private Usuario usuario;
     private Especialista especialista;
