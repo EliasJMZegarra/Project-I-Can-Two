@@ -8,6 +8,6 @@ import lombok.Setter;
 @Getter
 public class RolDTO {
     private int id;
-    private String tipoUsuario;
-    private String descripcion;
+    private String tipoRol;
+
 }

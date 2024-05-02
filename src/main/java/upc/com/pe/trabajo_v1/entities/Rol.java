@@ -17,7 +17,6 @@ public class Rol {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     @Column(name = "tipoUsuario", length = 20, nullable = false)
-    private String tipoUsuario;
-    @Column(name = "descripcion", length = 200, nullable = false)
-    private String descripcion;
+    private String tipoRol;
+
 }
