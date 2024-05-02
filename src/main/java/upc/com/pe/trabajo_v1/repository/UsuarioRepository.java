@@ -1,7 +1,21 @@
 package upc.com.pe.trabajo_v1.repository;
 
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import upc.com.pe.trabajo_v1.entities.Usuario;
 
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
+    public Usuario findByNombreUsuario(String nombreUsuario);
+
+    //BUSCAR POR NOMBRE
+    @Query("select count(u.nombreUsuario) from Usuario u where u.nombreUsuario =:nombreUsuario")
+    public int buscarUsuarioporNombre(@Param("username") String nombre);
+
+    @Transactional
+    @Modifying
+        @Query(value = "INSERT INTO users_roles(usuario_id, rol_id) VALUES (:usurio_id, :rol_id)", nativeQuery = true)
+    public Integer insertUserRol (@Param("usuario_id") Integer usuario_id, @Param("rol_id") Integer rol_id);
 }

@@ -15,6 +15,7 @@ public class RolService {
     private RolRepository rolRepository;
 
     @Transactional
+
     public Rol registrar(Rol rol){return rolRepository.save(rol);}
 
     public List<Rol> listado(){

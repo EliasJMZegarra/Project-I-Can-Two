@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import upc.com.pe.trabajo_v1.entities.Rol;
 
+import java.util.List;
+
 @Setter
 @Getter
 public class UsuarioDTO {
@@ -13,5 +15,6 @@ public class UsuarioDTO {
     private int edad;
     private String correo;
     private String contrasenia;
-    private Rol rol;
+    private Boolean enabled;
+    private List<Rol> rol;
 }
