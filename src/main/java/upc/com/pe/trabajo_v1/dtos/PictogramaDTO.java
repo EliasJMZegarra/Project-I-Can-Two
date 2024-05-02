@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class PictogramaDTO {
     private int id;
-    private String imagen;
+    private String filename;
     private String descripcion;
     private String categoria;
     //private byte[] imagenData;
