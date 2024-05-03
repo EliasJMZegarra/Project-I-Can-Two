@@ -11,10 +11,10 @@ import java.util.List;
 @Getter
 public class UsuarioDTO {
     private int id;
-    private String nombreUsuario;
+    private String username;
     private int edad;
     private String correo;
-    private String contrasenia;
+    private String password;
     private Boolean enabled;
     private List<Rol> rol;
 }

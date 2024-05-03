@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -16,26 +17,25 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
-@RestController
 @RequestMapping("/usuario")
 public class UsuarioController {
     @Autowired
     public UsuarioService service;
     @Autowired
     private PasswordEncoder bcrypt;
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/listar")
     public ResponseEntity<List<UsuarioDTO>> obtenerUsuarios(){
         List<Usuario> list = service.listado();
         List<UsuarioDTO> listDto = convertToListDto(list);
         return new ResponseEntity<>(listDto, HttpStatus.OK);
     }
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/registrar")
-    public ResponseEntity<Integer> crearUsuario(@RequestBody Usuario user){
-       if(service.buscar(user.getNombreUsuario())==0){
-           String bcryptPassword = bcrypt.encode(user.getContrasenia());
-           user.setContrasenia(bcryptPassword);
+    public ResponseEntity<Integer> registarUsuario(@RequestBody Usuario user){
+       if(service.buscar(user.getUsername())==0){
+           String bcryptPassword = bcrypt.encode(user.getPassword());
+           user.setPassword(bcryptPassword);
            service.registrar(user);
            return new ResponseEntity<>(1, HttpStatus.OK);
        }
@@ -47,7 +47,7 @@ public class UsuarioController {
                                                   @PathVariable("rol_id") Integer rol_id){
         return new ResponseEntity<>(service.insertUserRol(usuario_id, rol_id),HttpStatus.OK);
     }
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/actualizar")
     public ResponseEntity<UsuarioDTO> actualizarUsuario(@RequestBody UsuarioDTO usuarioDetalle) {
         UsuarioDTO usuarioDTO;
@@ -64,7 +64,7 @@ public class UsuarioController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No se pudo actualizar, sorry");
         }
     }
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/eliminar/{codigo}")
     public ResponseEntity<UsuarioDTO> borrarUsuario(@PathVariable(value = "codigo") Integer codigo){
         Usuario usuario;

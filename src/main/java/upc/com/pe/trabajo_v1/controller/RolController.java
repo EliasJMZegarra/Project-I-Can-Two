@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import upc.com.pe.trabajo_v1.dtos.RolDTO;
@@ -20,14 +21,14 @@ import java.util.stream.Collectors;
 public class RolController {
     @Autowired
     public RolService rolService;
-
+    //@PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/roles")
     public ResponseEntity<List<RolDTO>> obtenerRoles(){
         List<Rol> list = rolService.listado();
         List<RolDTO> listDto = convertToListDto(list);
         return new ResponseEntity<List<RolDTO>>(listDto, HttpStatus.OK);
     }
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/rol")
     public ResponseEntity<RolDTO> crearRol(@RequestBody RolDTO rolDTO) {
         Rol rol;
@@ -39,7 +40,7 @@ public class RolController {
         }
         return new ResponseEntity<RolDTO>(rolDTO, HttpStatus.OK);
     }
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/rol/{codigo}")
     public ResponseEntity<RolDTO> borrarRol(@PathVariable(value = "codigo") Integer codigo){
         Rol rol;
