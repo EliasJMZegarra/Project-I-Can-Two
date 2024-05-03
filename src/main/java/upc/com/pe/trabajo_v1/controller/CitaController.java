@@ -14,19 +14,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/cita")
 public class CitaController {
     @Autowired
     public CitaService service;
 
-    @GetMapping("/citas")
+    @GetMapping("/listar")
     public ResponseEntity<List<CitaDTO>> obtenerListadoCitas(){
         List<Cita> list = service.listado();
         List<CitaDTO> listDto = convertToListDto(list);
         return new ResponseEntity<List<CitaDTO>>(listDto, HttpStatus.OK);
     }
 
-    @PostMapping("/cita")
+    @PostMapping("/registrar")
     public ResponseEntity<CitaDTO> RegistarCita(@RequestBody CitaDTO citaDTO) {
         Cita cita;
         try {
@@ -38,7 +38,7 @@ public class CitaController {
         return new ResponseEntity<CitaDTO>(citaDTO, HttpStatus.OK);
     }
 
-    @PutMapping("/cita")
+    @PutMapping("/actualizar")
     public ResponseEntity<CitaDTO> actualizarCita(@RequestBody CitaDTO reservaDetalle) {
         CitaDTO citaDTO;
         Cita cita;
@@ -55,7 +55,7 @@ public class CitaController {
         }
     }
 
-    @DeleteMapping("/cita/{codigo}")
+    @DeleteMapping("/borrar/{codigo}")
     public ResponseEntity<CitaDTO> elimanarCita(@PathVariable(value = "codigo") Integer codigo){
         Cita cita;
         CitaDTO citaDTO;

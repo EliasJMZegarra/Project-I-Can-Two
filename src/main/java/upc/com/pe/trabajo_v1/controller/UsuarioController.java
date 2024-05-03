@@ -41,7 +41,7 @@ public class UsuarioController {
        }
         return new ResponseEntity<>(0, HttpStatus.BAD_REQUEST);
     }
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/registrar/{usuario_id}/{rol_id}")
     public ResponseEntity<Integer> CrearUsuariRol(@PathVariable("usuario_id") Integer usuario_id,
                                                   @PathVariable("rol_id") Integer rol_id){
