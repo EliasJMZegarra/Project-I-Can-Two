@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import upc.com.pe.trabajo_v1.dtos.ComentarioDTO;
@@ -14,19 +15,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/comentario")
 public class ComentarioController {
     @Autowired
     private ComentarioService comentarioService;
-
-    @GetMapping("/comentarios")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping("/listar")
     public ResponseEntity<List<ComentarioDTO>> obtenerComentario(){
         List<Comentario> list = comentarioService.listado();
         List<ComentarioDTO> listDto = convertToListDto(list);
         return new ResponseEntity<List<ComentarioDTO>>(listDto, HttpStatus.OK);
     }
-
-    @PostMapping("/comentario")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAnyAuthority('FAMILIAR')")
+    @PostMapping("/registrar")
     public ResponseEntity<ComentarioDTO> crearComentario(@RequestBody ComentarioDTO comentarioDTO) {
         Comentario comentario;
         try {
@@ -37,8 +38,8 @@ public class ComentarioController {
         }
         return new ResponseEntity<ComentarioDTO>(comentarioDTO, HttpStatus.OK);
     }
-
-    @PutMapping("/comentario")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAnyAuthority('FAMILIAR')")
+    @PutMapping("/actualizar")
     public ResponseEntity<ComentarioDTO> actualizarComentario(@RequestBody ComentarioDTO comentarioDetalle) {
         ComentarioDTO comentarioDTO;
         Comentario comentario;
@@ -54,8 +55,8 @@ public class ComentarioController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No se pudo actualizar, sorry");
         }
     }
-
-    @DeleteMapping("/comentario/{codigo}")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAnyAuthority('FAMILIAR')")
+    @DeleteMapping("/eliminar/{codigo}")
     public ResponseEntity<ComentarioDTO> borrarUsuario(@PathVariable(value = "codigo") Integer codigo){
         Comentario comentario;
         ComentarioDTO comentarioDTO;

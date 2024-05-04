@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import upc.com.pe.trabajo_v1.dtos.CitaDTO;
@@ -18,14 +19,14 @@ import java.util.stream.Collectors;
 public class CitaController {
     @Autowired
     public CitaService service;
-
+    @PreAuthorize("hasAuthority('ADMIN') or hasAnyAuthority('FAMILIAR')")
     @GetMapping("/listar")
     public ResponseEntity<List<CitaDTO>> obtenerListadoCitas(){
         List<Cita> list = service.listado();
         List<CitaDTO> listDto = convertToListDto(list);
         return new ResponseEntity<List<CitaDTO>>(listDto, HttpStatus.OK);
     }
-
+    @PreAuthorize("hasAuthority('ADMIN') or hasAnyAuthority('FAMILIAR')")
     @PostMapping("/registrar")
     public ResponseEntity<CitaDTO> RegistarCita(@RequestBody CitaDTO citaDTO) {
         Cita cita;
@@ -37,7 +38,7 @@ public class CitaController {
         }
         return new ResponseEntity<CitaDTO>(citaDTO, HttpStatus.OK);
     }
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PutMapping("/actualizar")
     public ResponseEntity<CitaDTO> actualizarCita(@RequestBody CitaDTO reservaDetalle) {
         CitaDTO citaDTO;
@@ -54,7 +55,7 @@ public class CitaController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No se pudo actualizar, sorry");
         }
     }
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/borrar/{codigo}")
     public ResponseEntity<CitaDTO> elimanarCita(@PathVariable(value = "codigo") Integer codigo){
         Cita cita;
