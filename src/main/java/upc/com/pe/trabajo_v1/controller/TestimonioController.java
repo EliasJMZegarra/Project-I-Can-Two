@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import upc.com.pe.trabajo_v1.dtos.TestimonioDTO;
@@ -14,19 +15,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/testimonio")
 public class TestimonioController {
     @Autowired
     public TestimonioService service;
-
-    @GetMapping("/testimonios")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAnyAuthority('FAMILIAR')")
+    @GetMapping("/listar")
     public ResponseEntity<List<TestimonioDTO>> obtenerTestimonio(){
         List<Testimonio> list = service.listado();
         List<TestimonioDTO> listDto = convertToListDto(list);
         return new ResponseEntity<List<TestimonioDTO>>(listDto, HttpStatus.OK);
     }
-
-    @PostMapping("/testimonio")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAnyAuthority('FAMILIAR')")
+    @PostMapping("/registrar")
     public ResponseEntity<TestimonioDTO> crearTestimonio(@RequestBody TestimonioDTO testimonioDTO) {
         Testimonio testimonio;
         try {
@@ -37,8 +38,8 @@ public class TestimonioController {
         }
         return new ResponseEntity<TestimonioDTO>(testimonioDTO, HttpStatus.OK);
     }
-
-    @PutMapping("/testimonio")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAnyAuthority('FAMILIAR')")
+    @PutMapping("/actualizar")
     public ResponseEntity<TestimonioDTO> actualizarTestimonio(@RequestBody TestimonioDTO testimonioDetalle) {
         TestimonioDTO testimonioDTO;
         Testimonio testimonio;
@@ -54,8 +55,8 @@ public class TestimonioController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No se pudo actualizar, sorry");
         }
     }
-
-    @DeleteMapping("/testimonio/{codigo}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @DeleteMapping("/eliminar/{codigo}")
     public ResponseEntity<TestimonioDTO> borrarTestimonio(@PathVariable(value = "codigo") Integer codigo){
         Testimonio testimonio;
         TestimonioDTO testimonioDTO;
