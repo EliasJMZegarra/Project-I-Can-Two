@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import upc.com.pe.trabajo_v1.dtos.PictogramaDTO;
@@ -18,14 +19,14 @@ import java.util.stream.Collectors;
 public class PictogramaController {
     @Autowired
     public PictogramaService service;
-
+    @PreAuthorize("hasAuthority('ADMIN') or hasAnyAuthority('FAMILIAR') or hasAnyAuthority('USER')")
     @GetMapping("/listar")
     public ResponseEntity<List<PictogramaDTO>> obtenerPictograma(){
         List<Pictograma> list = service.listado();
         List<PictogramaDTO> listDto = convertToListDto(list);
         return new ResponseEntity<>(listDto, HttpStatus.OK);
     }
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/registrar")
     public ResponseEntity<PictogramaDTO> RegistarPictograma(@RequestBody PictogramaDTO pictogramaDTO) {
         Pictograma pictograma;
@@ -37,7 +38,7 @@ public class PictogramaController {
         }
         return new ResponseEntity<>(pictogramaDTO, HttpStatus.OK);
     }
-
+    @PreAuthorize("hasAuthority('ADMIN')")
     @DeleteMapping("/eliminar/{codigo}")
     public ResponseEntity<PictogramaDTO> borrarPictograma(@PathVariable(value = "codigo") Integer codigo){
         Pictograma pictograma;
