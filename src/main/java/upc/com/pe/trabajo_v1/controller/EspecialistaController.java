@@ -4,6 +4,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import upc.com.pe.trabajo_v1.dtos.EspecialistaDTO;
@@ -14,19 +15,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/especialista")
 public class EspecialistaController {
     @Autowired
     public EspecialistaService service;
-
-    @GetMapping("/especialistas")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping("/listar")
     public ResponseEntity<List<EspecialistaDTO>> obtenerEspecialista(){
         List<Especialista> list = service.listado();
         List<EspecialistaDTO> listDto = convertToListDto(list);
         return new ResponseEntity<List<EspecialistaDTO>>(listDto, HttpStatus.OK);
     }
-
-    @PostMapping("/especialista")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PostMapping("/registrar")
     public ResponseEntity<EspecialistaDTO> RegistarEspecialista(@RequestBody EspecialistaDTO especialistaDTO) {
         Especialista especialista;
         try {
@@ -37,8 +38,8 @@ public class EspecialistaController {
         }
         return new ResponseEntity<EspecialistaDTO>(especialistaDTO, HttpStatus.OK);
     }
-
-    @PutMapping("/especialista")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PutMapping("/actualizar")
     public ResponseEntity<EspecialistaDTO> actualizar(@RequestBody EspecialistaDTO especialistaDetalle) {
         EspecialistaDTO especialistaDTO;
         Especialista especialista;
@@ -54,8 +55,8 @@ public class EspecialistaController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No se pudo actualizar, sorry");
         }
     }
-
-    @DeleteMapping("/especialista/{codigo}")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @DeleteMapping("/eliminar/{codigo}")
     public ResponseEntity<EspecialistaDTO> borrarEspecialista(@PathVariable(value = "codigo") Integer codigo){
         Especialista especialista;
         EspecialistaDTO especialistaDTO;
