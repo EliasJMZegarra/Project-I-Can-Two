@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 public class CitaController {
     @Autowired
     public CitaService service;
-    @PreAuthorize("hasAuthority('ADMIN') or hasAnyAuthority('FAMILIAR')")
+    @PreAuthorize("hasAuthority('ADMIN') or hasAuthority('FAMILIAR')")
     @GetMapping("/listar")
     public ResponseEntity<List<CitaDTO>> obtenerListadoCitas(){
         List<Cita> list = service.listado();
