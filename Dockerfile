@@ -1,5 +1,5 @@
 # the base image
-FROM openjdk:17.0.2-jdk-oracle
+FROM openjdk:17-jdk-oracle
 
 # the JAR file path
 ARG JAR_FILE=target/*.jar
