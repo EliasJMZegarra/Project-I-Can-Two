@@ -17,19 +17,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/rol")
 public class RolController {
     @Autowired
     public RolService rolService;
-    //@PreAuthorize("hasAuthority('ADMIN')")
-    @GetMapping("/roles")
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping("/listar")
     public ResponseEntity<List<RolDTO>> obtenerRoles(){
         List<Rol> list = rolService.listado();
         List<RolDTO> listDto = convertToListDto(list);
         return new ResponseEntity<List<RolDTO>>(listDto, HttpStatus.OK);
     }
     @PreAuthorize("hasAuthority('ADMIN')")
-    @PostMapping("/rol")
+    @PostMapping("/registrar")
     public ResponseEntity<RolDTO> crearRol(@RequestBody RolDTO rolDTO) {
         Rol rol;
         try {
@@ -41,7 +41,7 @@ public class RolController {
         return new ResponseEntity<RolDTO>(rolDTO, HttpStatus.OK);
     }
     @PreAuthorize("hasAuthority('ADMIN')")
-    @DeleteMapping("/rol/{codigo}")
+    @DeleteMapping("/eliminar/{codigo}")
     public ResponseEntity<RolDTO> borrarRol(@PathVariable(value = "codigo") Integer codigo){
         Rol rol;
         RolDTO rolDTO;
